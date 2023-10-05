@@ -2,6 +2,7 @@ class Controller {
 
     public static void main(String[] args) {
 
+        // #region variables e instancias
         String lenguage;
         String states;
         String initialState;
@@ -11,12 +12,16 @@ class Controller {
 
         View instaciaView = new View();
         AutomataFinitoDeterministico AFD = new AutomataFinitoDeterministico();
+        // #endregion
 
+        // #region lenguaje
         instaciaView.viewMesage("Digite los carateres del lenguaje separados por una coma y sin espacios");
         lenguage = instaciaView.getStringSimple();
 
         AFD.setArrayLenguage(lenguage.split(","));
+        // #endregion
 
+        // #region Estados
         do {
             instaciaView.viewMesage("Si desea digitar cada uno de los nombres de los estados digite 1");
             instaciaView.viewMesage("Si desea digitar solo la cantidad de estados digite 2");
@@ -45,24 +50,30 @@ class Controller {
             AFD.setArrayState(auxVector);
             instaciaView.viewMesage("Los estados creados son los siguientes", AFD.getArrayState());
         }
+        // #endregion
 
+        // #region estado inicial
         do {
             instaciaView.viewMesage("Digite el estado por el cual inica el automata");
             initialState = instaciaView.getStringSimple();
         } while (!validationContent(initialState, AFD.getArrayState(),
                 "El estado no pertenece a los antes mencionados"));
+        // #endregion
 
+        // #region palabra a analizar
         do {
             instaciaView
                     .viewMesage("Ingrese la cadena de caracteres que desea analizar separada por comas y sin espacios");
             wInput = instaciaView.getStringSimple();
             AFD.setArrayWord(wInput.split(","));
         } while (!validationContent(AFD.getArrayWord(), AFD.getArrayLenguage(), "lenaguaje"));
+        // #endregion
 
     }
 
     // #region metodos de validacion
 
+    // Validacion que un caracter tipo string este en un arreglo
     static public boolean validationContent(String caracter, String[] arrayValidator) {
         View instaView = new View();
         for (int i = 0; i < arrayValidator.length; i++) {
@@ -73,6 +84,8 @@ class Controller {
         return false;
     }
 
+    // Validacion que un caracter tipo string este en un arreglo
+    // y un parametro para el mensaje de error
     static public boolean validationContent(String caracter, String[] arrayValidator, String smsError) {
         View instaView = new View();
         for (int i = 0; i < arrayValidator.length; i++) {
@@ -83,6 +96,7 @@ class Controller {
         return false;
     }
 
+    // Validacion que un caracter tipo int este en un arreglo
     static public boolean validationContent(int caracter, int[] arrayValidator) {
         View instaView = new View();
         for (int i = 0; i < arrayValidator.length; i++) {
@@ -93,6 +107,8 @@ class Controller {
         return false;
     }
 
+    // Validacion que un caracter tipo int este en un arreglo
+    // y un parametro para el mensaje de error
     static public boolean validationContent(int caracter, int[] arrayValidator, String smsError) {
         View instaView = new View();
         for (int i = 0; i < arrayValidator.length; i++) {
@@ -103,6 +119,8 @@ class Controller {
         return false;
     }
 
+    // Validacion que los caracteres de un arreglo este en otro arreglo
+    // y un parametro para el mensaje de error
     static public boolean validationContent(String[] arrayValidator1, String[] arrayValidator2, String postfixSms) {
         View instaView = new View();
         for (String caracter1 : arrayValidator1) {
