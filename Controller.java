@@ -36,11 +36,20 @@ class Controller {
                 auxVector[i] = "E" + i;
             }
             AFD.setArrayState(auxVector);
+            instaciaView.viewMesage("Los estados creados son los siguientes", AFD.getArrayState());
         }
 
         instaciaView.viewMesage("Digite el estado por el cual inica el automata");
         initialState = instaciaView.getStringSimple();
 
+    }
+
+    public boolean validationContent(String caracter, String[] arrayValidator) {
+        for (int i = 0; i < arrayValidator.length; i++) {
+            if (caracter == arrayValidator[i])
+                return true;
+        }
+        return false;
     }
 
 }
