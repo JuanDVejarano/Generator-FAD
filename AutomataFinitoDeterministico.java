@@ -4,6 +4,7 @@ public class AutomataFinitoDeterministico {
     private String arrayLenguage[];
     private String arrayState[];
     private String arrayRules[];
+    private String arrayWord[];
     // #endregion
 
     // #region Getters and Setters
@@ -29,6 +30,14 @@ public class AutomataFinitoDeterministico {
 
     public void setArrayRules(String[] arrayRules) {
         this.arrayRules = arrayRules;
+    }
+
+    public String[] getArrayWord() {
+        return arrayWord;
+    }
+
+    public void setArrayWord(String[] arrayWord) {
+        this.arrayWord = arrayWord;
     }
     // #endregion
 

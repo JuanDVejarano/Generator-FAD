@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 class Controller {
 
     public static void main(String[] args) {
@@ -7,7 +5,7 @@ class Controller {
         String lenguage;
         String states;
         String initialState;
-        // String wInput;
+        String wInput;
         int optionState;
         int[] arrayOptionStates = { 1, 2 }; // arreglo para validar opciones
 
@@ -26,9 +24,17 @@ class Controller {
         } while (!validationContent(optionState, arrayOptionStates));
 
         if (1 == optionState) {
-            instaciaView.viewMesage("Digite los estados separados por una coma y sin espacios");
-            states = instaciaView.getStringSimple();
-            AFD.setArrayState(states.split(","));
+            int optionRepeat;
+            do {
+                instaciaView.viewMesage("Digite los estados separados por una coma y sin espacios");
+                states = instaciaView.getStringSimple();
+                AFD.setArrayState(states.split(","));
+                instaciaView.viewMesage("Los estados que digito son: ", AFD.getArrayState());
+                do {
+                    instaciaView.viewMesage("Si son correctos marque 1, si desea repetirlos marque 2");
+                    optionRepeat = instaciaView.getNumber();
+                } while (!validationContent(optionRepeat, arrayOptionStates));
+            } while (optionRepeat != 1);
         } else if (2 == optionState) {
             instaciaView.viewMesage("Digite la cantidad de estados que desea");
             int amountStates = instaciaView.getNumber();
@@ -46,6 +52,13 @@ class Controller {
         } while (!validationContent(initialState, AFD.getArrayState(),
                 "El estado no pertenece a los antes mencionados"));
 
+        do {
+            instaciaView
+                    .viewMesage("Ingrese la cadena de caracteres que desea analizar separada por comas y sin espacios");
+            wInput = instaciaView.getStringSimple();
+            AFD.setArrayWord(wInput.split(","));
+        } while (!validationContent(AFD.getArrayWord(), AFD.getArrayLenguage(), "lenaguaje"));
+
     }
 
     // #region metodos de validacion
@@ -60,16 +73,6 @@ class Controller {
         return false;
     }
 
-    static public boolean validationContent(int caracter, int[] arrayValidator) {
-        View instaView = new View();
-        for (int i = 0; i < arrayValidator.length; i++) {
-            if (caracter == arrayValidator[i])
-                return true;
-        }
-        instaView.viewMesage("Valor NO valido");
-        return false;
-    }
-
     static public boolean validationContent(String caracter, String[] arrayValidator, String smsError) {
         View instaView = new View();
         for (int i = 0; i < arrayValidator.length; i++) {
@@ -77,6 +80,16 @@ class Controller {
                 return true;
         }
         instaView.viewMesage(smsError);
+        return false;
+    }
+
+    static public boolean validationContent(int caracter, int[] arrayValidator) {
+        View instaView = new View();
+        for (int i = 0; i < arrayValidator.length; i++) {
+            if (caracter == arrayValidator[i])
+                return true;
+        }
+        instaView.viewMesage("Valor NO valido");
         return false;
     }
 
@@ -88,6 +101,23 @@ class Controller {
         }
         instaView.viewMesage(smsError);
         return false;
+    }
+
+    static public boolean validationContent(String[] arrayValidator1, String[] arrayValidator2, String postfixSms) {
+        View instaView = new View();
+        for (String caracter1 : arrayValidator1) {
+            boolean flag = false;
+            for (String caracter2 : arrayValidator2) {
+                if (caracter1.equals(caracter2)) {
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                instaView.viewMesage("el termino " + caracter1 + " no se encuentra en el " + postfixSms);
+                return false;
+            }
+        }
+        return true;
     }
 
     // #endregion
