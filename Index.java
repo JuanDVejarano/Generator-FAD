@@ -43,8 +43,4 @@ class Index {
 
     }
 
-    static public void validatio1() {
-
-    }
-
 }
