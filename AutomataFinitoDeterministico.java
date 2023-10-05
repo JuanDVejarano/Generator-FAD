@@ -2,8 +2,8 @@ public class AutomataFinitoDeterministico {
 
     //#region Atributos
     private String arrayLenguage[];
-    private String arrayRules[];
     private String arrayState[];
+    private String arrayRules[];
     //#endregion
 
 
