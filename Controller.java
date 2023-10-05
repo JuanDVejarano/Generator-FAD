@@ -9,6 +9,7 @@ class Controller {
         String initialState;
         // String wInput;
         int optionState;
+        int[] arrayOptionStates = { 1, 2 }; // arreglo para validar opciones
 
         View instaciaView = new View();
         AutomataFinitoDeterministico AFD = new AutomataFinitoDeterministico();
@@ -22,7 +23,7 @@ class Controller {
             instaciaView.viewMesage("Si desea digitar cada uno de los nombres de los estados digite 1");
             instaciaView.viewMesage("Si desea digitar solo la cantidad de estados digite 2");
             optionState = instaciaView.getNumber();
-        } while (optionState != 1 && optionState != 2);
+        } while (!validationContent(optionState, arrayOptionStates));
 
         if (1 == optionState) {
             instaciaView.viewMesage("Digite los estados separados por una coma y sin espacios");
@@ -39,17 +40,55 @@ class Controller {
             instaciaView.viewMesage("Los estados creados son los siguientes", AFD.getArrayState());
         }
 
-        instaciaView.viewMesage("Digite el estado por el cual inica el automata");
-        initialState = instaciaView.getStringSimple();
+        do {
+            instaciaView.viewMesage("Digite el estado por el cual inica el automata");
+            initialState = instaciaView.getStringSimple();
+        } while (!validationContent(initialState, AFD.getArrayState(),
+                "El estado no pertenece a los antes mencionados"));
 
     }
 
-    public boolean validationContent(String caracter, String[] arrayValidator) {
+    // #region metodos de validacion
+
+    static public boolean validationContent(String caracter, String[] arrayValidator) {
+        View instaView = new View();
+        for (int i = 0; i < arrayValidator.length; i++) {
+            if (arrayValidator[i].equals(caracter))
+                return true;
+        }
+        instaView.viewMesage("Candea NO valida");
+        return false;
+    }
+
+    static public boolean validationContent(int caracter, int[] arrayValidator) {
+        View instaView = new View();
         for (int i = 0; i < arrayValidator.length; i++) {
             if (caracter == arrayValidator[i])
                 return true;
         }
+        instaView.viewMesage("Valor NO valido");
         return false;
     }
 
+    static public boolean validationContent(String caracter, String[] arrayValidator, String smsError) {
+        View instaView = new View();
+        for (int i = 0; i < arrayValidator.length; i++) {
+            if (arrayValidator[i].equals(caracter))
+                return true;
+        }
+        instaView.viewMesage(smsError);
+        return false;
+    }
+
+    static public boolean validationContent(int caracter, int[] arrayValidator, String smsError) {
+        View instaView = new View();
+        for (int i = 0; i < arrayValidator.length; i++) {
+            if (caracter == arrayValidator[i])
+                return true;
+        }
+        instaView.viewMesage(smsError);
+        return false;
+    }
+
+    // #endregion
 }
