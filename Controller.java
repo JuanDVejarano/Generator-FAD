@@ -8,90 +8,114 @@ class Controller {
         String initialState;
         String wInput;
         int optionState;
+        String route;
         int[] arrayOptionStates = { 1, 2 }; // arreglo para validar opciones
+        boolean flagNewWord = false;
 
         View instaciaView = new View();
         AutomataFinitoDeterministico AFD = new AutomataFinitoDeterministico();
         // #endregion
 
-        // #region lenguaje
-        instaciaView.viewMesage("Digite los carateres del lenguaje separados por una coma y sin espacios");
-        lenguage = instaciaView.getStringSimple();
+        try {
 
-        AFD.setArrayLenguage(lenguage.split(","));
-        // #endregion
+            // #region lenguaje
+            instaciaView.viewMesage("Digite los carateres del lenguaje separados por una coma y sin espacios");
+            lenguage = instaciaView.getStringSimple();
 
-        // #region Estados
-        do {
-            instaciaView.viewMesage("Si desea digitar cada uno de los nombres de los estados digite 1");
-            instaciaView.viewMesage("Si desea digitar solo la cantidad de estados digite 2");
-            optionState = instaciaView.getNumber();
-        } while (!validationContent(optionState, arrayOptionStates));
+            AFD.setArrayLenguage(lenguage.split(","));
+            // #endregion
 
-        if (1 == optionState) {
-            int optionRepeat;
+            // #region Estados
             do {
-                instaciaView.viewMesage("Digite los estados separados por una coma y sin espacios");
-                states = instaciaView.getStringSimple();
-                AFD.setArrayState(states.split(","));
-                instaciaView.viewMesage("Los estados que digito son: ", AFD.getArrayState());
+                instaciaView.viewMesage("Si desea digitar cada uno de los nombres de los estados digite 1");
+                instaciaView.viewMesage("Si desea digitar solo la cantidad de estados digite 2");
+                optionState = instaciaView.getNumber();
+            } while (!validationContent(optionState, arrayOptionStates));
+
+            if (1 == optionState) {
+                int optionRepeat;
                 do {
-                    instaciaView.viewMesage("Si son correctos marque 1, si desea repetirlos marque 2");
-                    optionRepeat = instaciaView.getNumber();
-                } while (!validationContent(optionRepeat, arrayOptionStates));
-            } while (optionRepeat != 1);
-        } else if (2 == optionState) {
-            instaciaView.viewMesage("Digite la cantidad de estados que desea");
-            int amountStates = instaciaView.getNumber();
-            String auxVector[] = new String[amountStates];
-            for (int i = 0; i < amountStates; i++) {
-                auxVector[i] = "E" + i;
-            }
-            AFD.setArrayState(auxVector);
-            instaciaView.viewMesage("Los estados creados son los siguientes", AFD.getArrayState());
-        }
-        // #endregion
-
-        // #region estado inicial
-        do {
-            instaciaView.viewMesage("Digite el estado por el cual inica el automata");
-            initialState = instaciaView.getStringSimple();
-        } while (!validationContent(initialState, AFD.getArrayState(),
-                "El estado no pertenece a los antes mencionados"));
-        // #endregion
-
-        // #region reglas
-        {
-            String auxArrayRules[] = AFD.getArrayState();
-            String auxArrayLenguage[] = AFD.getArrayLenguage();
-            String auxArrayDelta[][] = new String[auxArrayRules.length][auxArrayLenguage.length];
-            instaciaView.viewMesage("El programa le pedira digitar delta uno por uno ay que es deterministico");
-            for (int i = 0; i < auxArrayRules.length; i++) {
-                for (int j = 0; j < auxArrayLenguage.length; j++) {
-                    String auxSms = "Digite la delta de (" + auxArrayRules[i] + "," + auxArrayLenguage[j] + ")->";
-                    String auxState;
+                    instaciaView.viewMesage("Digite los estados separados por una coma y sin espacios");
+                    states = instaciaView.getStringSimple();
+                    AFD.setArrayState(states.split(","));
+                    instaciaView.viewMesage("Los estados que digito son: ", AFD.getArrayState());
                     do {
-                        instaciaView.viewMesage(auxSms);
-                        auxState = instaciaView.getStringSimple();
-                    } while (!validationContent(auxState, AFD.getArrayState(),
-                            "El estado no pertenece a los antes mencionados"));
-                    auxArrayDelta[i][j] = auxState;
+                        instaciaView.viewMesage("Si son correctos marque 1, si desea repetirlos marque 2");
+                        optionRepeat = instaciaView.getNumber();
+                    } while (!validationContent(optionRepeat, arrayOptionStates));
+                } while (optionRepeat != 1);
+            } else if (2 == optionState) {
+                instaciaView.viewMesage("Digite la cantidad de estados que desea");
+                int amountStates = instaciaView.getNumber();
+                String auxVector[] = new String[amountStates];
+                for (int i = 0; i < amountStates; i++) {
+                    auxVector[i] = "E" + i;
                 }
+                AFD.setArrayState(auxVector);
+                instaciaView.viewMesage("Los estados creados son los siguientes", AFD.getArrayState());
             }
-            AFD.setArrayRules(auxArrayDelta);
+            // #endregion
+
+            // #region estado inicial
+            do {
+                instaciaView.viewMesage("Digite el estado por el cual inica el automata");
+                initialState = instaciaView.getStringSimple();
+            } while (!validationContent(initialState, AFD.getArrayState(),
+                    "El estado no pertenece a los antes mencionados"));
+
+            AFD.setInitialState(initialState);
+            // #endregion
+
+            // #region reglas
+            {
+                String auxArrayRules[] = AFD.getArrayState();
+                String auxArrayLenguage[] = AFD.getArrayLenguage();
+                String auxArrayDelta[][] = new String[auxArrayRules.length][auxArrayLenguage.length];
+                instaciaView.viewMesage("El programa le pedira digitar delta uno por uno ay que es deterministico");
+                for (int i = 0; i < auxArrayRules.length; i++) {
+                    for (int j = 0; j < auxArrayLenguage.length; j++) {
+                        String auxSms = "Digite la delta de (" + auxArrayRules[i] + "," + auxArrayLenguage[j] + ")->";
+                        String auxState;
+                        do {
+                            instaciaView.viewMesage(auxSms);
+                            auxState = instaciaView.getStringSimple();
+                        } while (!validationContent(auxState, AFD.getArrayState(),
+                                "El estado no pertenece a los antes mencionados"));
+                        auxArrayDelta[i][j] = auxState;
+                    }
+                }
+                AFD.setArrayRules(auxArrayDelta);
+            }
+
+            // #endregion
+
+            // #region palabra y analisis
+            do {
+                int valueFlag;
+                do {
+                    instaciaView
+                            .viewMesage(
+                                    "Ingrese la cadena de caracteres que desea analizar separada por comas y sin espacios");
+                    wInput = instaciaView.getStringSimple();
+                    AFD.setArrayWord(wInput.split(","));
+                } while (!validationContent(AFD.getArrayWord(), AFD.getArrayLenguage(), "lenaguaje"));
+
+                route = "La ruta de estados seria: " + AFD.analyzeWord();
+                instaciaView.viewMesage(route);
+
+                instaciaView.viewMesage("Si desea analizar otra palabra digite 1, si desea finalizar digite 2");
+                valueFlag = instaciaView.getNumber();
+                if (1 == valueFlag)
+                    flagNewWord = true;
+                else if (2 == valueFlag)
+                    flagNewWord = false;
+            } while (flagNewWord);
+
+            // #endregion
+
+        } catch (Exception e) {
+            instaciaView.viewMesage("Error en el tipo de datos");
         }
-
-        // #endregion
-
-        // #region palabra a analizar
-        do {
-            instaciaView
-                    .viewMesage("Ingrese la cadena de caracteres que desea analizar separada por comas y sin espacios");
-            wInput = instaciaView.getStringSimple();
-            AFD.setArrayWord(wInput.split(","));
-        } while (!validationContent(AFD.getArrayWord(), AFD.getArrayLenguage(), "lenaguaje"));
-        // #endregion
-
     }
 
     // #region metodos de validacion

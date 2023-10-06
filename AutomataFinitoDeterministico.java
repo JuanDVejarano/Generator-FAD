@@ -3,6 +3,7 @@ public class AutomataFinitoDeterministico {
     // #region Atributos
     private String arrayLenguage[];
     private String arrayState[];
+    private String initialState;
     private String arrayRules[][];
     private String arrayWord[];
     // #endregion
@@ -24,6 +25,14 @@ public class AutomataFinitoDeterministico {
         this.arrayState = arrayState;
     }
 
+    public String getInitialState() {
+        return initialState;
+    }
+
+    public void setInitialState(String initialState) {
+        this.initialState = initialState;
+    }
+
     public String[][] getArrayRules() {
         return arrayRules;
     }
@@ -42,6 +51,27 @@ public class AutomataFinitoDeterministico {
     // #endregion
 
     // #region Funciones
+    public String analyzeWord() {
+        String route = initialState;
+        String actualState = initialState;
+        int indexRow = 0;
+        int indexColumn = 0;
+        for (int i = 0; i < this.arrayWord.length; i++) {
+            for (int j = 0; j < this.arrayLenguage.length; j++) {
+                if (this.arrayLenguage[j].equals(this.arrayWord[i])) {
+                    indexColumn = j;
+                }
+            }
+            for (int k = 0; k < arrayState.length; k++) {
+                if (actualState.equals(this.arrayState[k])) {
+                    indexRow = k;
+                }
+            }
+            actualState = this.arrayRules[indexRow][indexColumn];
+            route = route + " -> " + actualState;
 
+        }
+        return route;
+    }
     // #endregion
 }
