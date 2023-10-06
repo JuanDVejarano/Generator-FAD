@@ -60,6 +60,29 @@ class Controller {
                 "El estado no pertenece a los antes mencionados"));
         // #endregion
 
+        // #region reglas
+        {
+            String auxArrayRules[] = AFD.getArrayState();
+            String auxArrayLenguage[] = AFD.getArrayLenguage();
+            String auxArrayDelta[][] = new String[auxArrayRules.length][auxArrayLenguage.length];
+            instaciaView.viewMesage("El programa le pedira digitar delta uno por uno ay que es deterministico");
+            for (int i = 0; i < auxArrayRules.length; i++) {
+                for (int j = 0; j < auxArrayLenguage.length; j++) {
+                    String auxSms = "Digite la delta de (" + auxArrayRules[i] + "," + auxArrayLenguage[j] + ")->";
+                    String auxState;
+                    do {
+                        instaciaView.viewMesage(auxSms);
+                        auxState = instaciaView.getStringSimple();
+                    } while (!validationContent(auxState, AFD.getArrayState(),
+                            "El estado no pertenece a los antes mencionados"));
+                    auxArrayDelta[i][j] = auxState;
+                }
+            }
+            AFD.setArrayRules(auxArrayDelta);
+        }
+
+        // #endregion
+
         // #region palabra a analizar
         do {
             instaciaView

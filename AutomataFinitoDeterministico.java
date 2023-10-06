@@ -3,7 +3,7 @@ public class AutomataFinitoDeterministico {
     // #region Atributos
     private String arrayLenguage[];
     private String arrayState[];
-    private String arrayRules[];
+    private String arrayRules[][];
     private String arrayWord[];
     // #endregion
 
@@ -24,11 +24,11 @@ public class AutomataFinitoDeterministico {
         this.arrayState = arrayState;
     }
 
-    public String[] getArrayRules() {
+    public String[][] getArrayRules() {
         return arrayRules;
     }
 
-    public void setArrayRules(String[] arrayRules) {
+    public void setArrayRules(String[][] arrayRules) {
         this.arrayRules = arrayRules;
     }
 
